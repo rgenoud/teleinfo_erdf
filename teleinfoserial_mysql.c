@@ -440,6 +440,7 @@ int main(int argc, char **argv)
 	int erreur_checksum;
 	int fdserial;
 	MYSQL mysql;
+	my_bool auto_reconnect = 1;
 	struct tm *dc;
 	struct config conf;
 	char timestamp[11];
@@ -483,6 +484,8 @@ int main(int argc, char **argv)
 			syslog(LOG_ERR, "Erreur: Initialisation MySQL impossible !");
 			goto err_init_bd;
 		}
+
+		mysql_options(&mysql, MYSQL_OPT_RECONNECT, &auto_reconnect);
 
 		if(!mysql_real_connect(&mysql, conf.mysql_host,
 				       conf.mysql_login, conf.mysql_pwd,
